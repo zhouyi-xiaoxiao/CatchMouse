@@ -1,4 +1,5 @@
 import AppKit
+import ColorSync
 import CoreGraphics
 
 /// Enumerates the active displays and warps the mouse cursor between them.
@@ -55,5 +56,22 @@ final class DisplayManager {
         let step = forward ? 1 : -1
         let next = ((index + step) % ids.count + ids.count) % ids.count
         moveCursor(to: ids[next])
+    }
+
+    // MARK: - Stable identity (survives reconnect / reordering)
+
+    /// A stable per-monitor key — the display's UUID when available — used to
+    /// persist a user's shortcut against a specific physical monitor. Falls
+    /// back to vendor/model/serial if no UUID is available.
+    func stableKey(for id: CGDirectDisplayID) -> String {
+        if let uuid = CGDisplayCreateUUIDFromDisplayID(id)?.takeRetainedValue() {
+            return CFUUIDCreateString(nil, uuid) as String
+        }
+        return "v\(CGDisplayVendorNumber(id))-m\(CGDisplayModelNumber(id))-s\(CGDisplaySerialNumber(id))"
+    }
+
+    /// The currently-active display matching a previously stored stable key.
+    func display(forStableKey key: String) -> CGDirectDisplayID? {
+        orderedDisplays().first { stableKey(for: $0) == key }
     }
 }

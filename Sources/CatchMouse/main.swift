@@ -1,13 +1,19 @@
 import AppKit
 
-// Scriptable / headless mode: any argument runs a CLI verb and exits without
-// launching the menu-bar agent. Handy for testing and for binding to other tools.
-if CommandLine.arguments.count > 1 {
-    exit(runCLI(arguments: Array(CommandLine.arguments.dropFirst())))
+// Argument handling:
+//   --preferences / --prefs  → launch the menu-bar agent and open Preferences
+//   any other argument(s)    → run a scriptable CLI verb and exit
+//   no arguments             → launch the menu-bar agent
+let extraArgs = Array(CommandLine.arguments.dropFirst())
+let openPreferences = extraArgs.contains("--preferences") || extraArgs.contains("--prefs")
+let cliArgs = extraArgs.filter { $0 != "--preferences" && $0 != "--prefs" }
+
+if !openPreferences, !cliArgs.isEmpty {
+    exit(runCLI(arguments: cliArgs))
 }
 
 let app = NSApplication.shared
-let delegate = AppDelegate()
+let delegate = AppDelegate(openPreferencesOnLaunch: openPreferences)
 app.delegate = delegate
 app.setActivationPolicy(.accessory)   // menu-bar agent: no Dock icon, no main window
 app.run()

@@ -21,6 +21,11 @@ small, dependency-free menu-bar agent built with the modern toolchain.
   centre of the **left / centre / right** display.
 - 🔁 **Cycle** — `⌃⌥→` / `⌃⌥←` move to the next / previous display, wrapping
   around.
+- ⚙️ **Customisable** — set your own shortcut for each display (and for cycling)
+  in the **Preferences** window; bindings are saved per monitor and survive
+  reconnects.
+- 🔢 **Identify Displays** — flash a big number on each screen so you know which
+  is which.
 - 🧭 **Menu-bar agent** — lives in the menu bar (no Dock icon); the menu lists
   every attached display and its size, and updates live as you plug monitors
   in and out.
@@ -67,6 +72,12 @@ Displays are ordered left → right by their position in the global desktop, so
 `⌃⌘,` is the left-most display, `⌃⌘.` the centre and `⌃⌘/` the right. (With more
 than three displays, `,` `.` `/` map to the first three; use `⌃⌥→` / `⌃⌥←` to
 reach the rest.)
+
+**Customise shortcuts:** open **Preferences…** from the menu-bar icon, click any
+recorder and press the combination you want (⎋ cancels, ⌫ clears). Each
+display's binding is stored per monitor by its UUID, so it sticks even after you
+unplug and replug. **Identify Displays** flashes a number on every screen so you
+can tell them apart.
 
 ### Command line
 

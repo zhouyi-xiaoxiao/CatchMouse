@@ -1,7 +1,7 @@
 import CoreGraphics
 import Foundation
 
-let appVersion = "2.0.0"
+let appVersion = "2.1.0"
 
 private let helpText = """
 CatchMouse \(appVersion) — jump the mouse cursor between displays.
@@ -16,7 +16,8 @@ scriptable equivalents that move the cursor once and exit:
   --version, -v         Print the version.
   --help, -h            Print this help.
 
-Global hotkeys when running as the menu-bar agent:
+Global hotkeys when running as the menu-bar agent (defaults — customise each in
+the menu-bar app's Preferences…):
   ⌃⌘, / ⌃⌘. / ⌃⌘/      Jump to the left / centre / right display.
   ⌃⌥→ / ⌃⌥←            Cycle to the next / previous display.
 """

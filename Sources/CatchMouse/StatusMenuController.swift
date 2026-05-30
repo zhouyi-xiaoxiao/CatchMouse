@@ -5,17 +5,21 @@ enum MenuAction {
     case moveTo(Int)   // display index (0-based, left → right)
     case next
     case previous
+    case openPreferences
+    case identifyDisplays
 }
 
 /// Owns the menu-bar status item and rebuilds its menu to reflect the displays
-/// currently attached to the machine.
+/// currently attached and the user's stored shortcuts.
 final class StatusMenuController: NSObject {
     private let statusItem: NSStatusItem
     private let displays: DisplayManager
+    private let store: HotKeyStore
     private let onAction: (MenuAction) -> Void
 
-    init(displays: DisplayManager, onAction: @escaping (MenuAction) -> Void) {
+    init(displays: DisplayManager, store: HotKeyStore, onAction: @escaping (MenuAction) -> Void) {
         self.displays = displays
+        self.store = store
         self.onAction = onAction
         self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         super.init()
@@ -43,7 +47,9 @@ final class StatusMenuController: NSObject {
             for (index, id) in ids.enumerated() {
                 let bounds = CGDisplayBounds(id)
                 let isMain = (id == CGMainDisplayID()) ? " · main" : ""
-                let shortcut = index < Shortcuts.jumpKeys.count ? "   \(Shortcuts.jumpKeys[index].label)" : ""
+                let key = displays.stableKey(for: id)
+                let combo = Shortcuts.jumpCombo(index: index, displayKey: key, store: store)
+                let shortcut = combo.map { "   \($0.displayString)" } ?? ""
                 let item = NSMenuItem(
                     title: "Display \(index + 1) — \(Int(bounds.width))×\(Int(bounds.height))\(isMain)\(shortcut)",
                     action: #selector(moveToDisplay(_:)), keyEquivalent: "")
@@ -54,8 +60,14 @@ final class StatusMenuController: NSObject {
         }
 
         menu.addItem(.separator())
-        menu.addItem(action("Move to Next Display   ⌃⌥→", #selector(moveNext)))
-        menu.addItem(action("Move to Previous Display   ⌃⌥←", #selector(movePrev)))
+        menu.addItem(action("Move to Next Display   \(Shortcuts.nextCombo(store).displayString)", #selector(moveNext)))
+        menu.addItem(action("Move to Previous Display   \(Shortcuts.prevCombo(store).displayString)", #selector(movePrev)))
+
+        menu.addItem(.separator())
+        menu.addItem(action("Identify Displays", #selector(identify)))
+        let prefs = action("Preferences…", #selector(openPreferences))
+        prefs.keyEquivalent = ","
+        menu.addItem(prefs)
 
         menu.addItem(.separator())
         menu.addItem(action("About CatchMouse", #selector(showAbout)))
@@ -85,6 +97,8 @@ final class StatusMenuController: NSObject {
     @objc private func moveToDisplay(_ sender: NSMenuItem) { onAction(.moveTo(sender.tag)) }
     @objc private func moveNext() { onAction(.next) }
     @objc private func movePrev() { onAction(.previous) }
+    @objc private func identify() { onAction(.identifyDisplays) }
+    @objc private func openPreferences() { onAction(.openPreferences) }
     @objc private func quit() { NSApp.terminate(nil) }
 
     @objc private func showAbout() {
@@ -92,7 +106,7 @@ final class StatusMenuController: NSObject {
         NSApp.orderFrontStandardAboutPanel(options: [
             .applicationName: "CatchMouse",
             .applicationVersion: appVersion,
-            .init(rawValue: "Copyright"): "MIT licensed · a modern reimplementation of the classic CatchMouse"
+            .init(rawValue: "Copyright"): "MIT licensed · a modern reimplementation of the classic CatchMouse",
         ])
     }
 }

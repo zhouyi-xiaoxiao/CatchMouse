@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.1.0
+
+### Added
+- **Preferences window** — set a custom global shortcut for each display and for
+  next/previous cycling: click a recorder and press the keys you want
+  (⎋ cancels, ⌫ clears).
+- Bindings persist **per monitor**, keyed by the display's UUID, so they survive
+  reconnects and reordering.
+- **Identify Displays** flashes a large number on each screen so you can tell
+  which is which.
+
+### Changed
+- Hotkeys are now resolved from saved preferences, falling back to the
+  `⌃⌘,` / `⌃⌘.` / `⌃⌘/` and `⌃⌥→` / `⌃⌥←` defaults.
+
 ## 2.0.0
 
 A ground-up rewrite of the classic **CatchMouse** (v1.2, 2011) for modern macOS.

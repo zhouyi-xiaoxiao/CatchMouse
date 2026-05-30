@@ -15,7 +15,7 @@ APP_DIR="build/${APP_NAME}.app"
 MIN_MACOS="11"
 SDK="$(xcrun --sdk macosx --show-sdk-path)"
 SRCS=(Sources/"${APP_NAME}"/*.swift)
-FRAMEWORKS=(-framework AppKit -framework Carbon -framework CoreGraphics)
+FRAMEWORKS=(-framework AppKit -framework Carbon -framework CoreGraphics -framework ColorSync)
 
 mkdir -p build/arch
 slices=()

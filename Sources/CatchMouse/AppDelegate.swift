@@ -1,26 +1,38 @@
 import AppKit
-import Carbon.HIToolbox
 
-/// Wires together the display manager, global hotkeys and the menu-bar UI, and
-/// keeps them in sync as displays are connected or disconnected.
+/// Wires together the display manager, global hotkeys, the menu-bar UI and the
+/// Preferences window, and keeps the hotkeys in sync as displays change or the
+/// user edits their shortcuts.
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let displays = DisplayManager()
     private let hotKeys = HotKeyCenter()
+    private let store = HotKeyStore.shared
+    private let openPreferencesOnLaunch: Bool
     private var menu: StatusMenuController!
+    private lazy var preferences = PreferencesWindowController(displays: displays, store: store) { [weak self] in
+        self?.reload()
+    }
+
+    init(openPreferencesOnLaunch: Bool = false) {
+        self.openPreferencesOnLaunch = openPreferencesOnLaunch
+        super.init()
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        menu = StatusMenuController(displays: displays) { [weak self] action in
+        menu = StatusMenuController(displays: displays, store: store) { [weak self] action in
             self?.perform(action)
         }
         reload()
         NotificationCenter.default.addObserver(
             self, selector: #selector(screensChanged),
             name: NSApplication.didChangeScreenParametersNotification, object: nil)
+        if openPreferencesOnLaunch { preferences.show() }
     }
 
     @objc private func screensChanged() { reload() }
 
-    /// Re-register hotkeys and rebuild the menu to match the current displays.
+    /// Re-register hotkeys and rebuild the menu to match the current displays
+    /// and the user's stored shortcuts.
     private func reload() {
         registerHotKeys()
         menu.rebuild()
@@ -35,29 +47,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             displays.moveToAdjacentDisplay(forward: true)
         case .previous:
             displays.moveToAdjacentDisplay(forward: false)
+        case .openPreferences:
+            preferences.show()
+        case .identifyDisplays:
+            DisplayIdentifier.flash(displays: displays)
         }
     }
 
     private func registerHotKeys() {
         hotKeys.unregisterAll()
 
-        // ⌃⌘,  ⌃⌘.  ⌃⌘/  →  jump to the left / centre / right display.
-        let ids = displays.orderedDisplays()
-        let count = min(ids.count, Shortcuts.jumpKeys.count)
-        for index in 0..<count {
-            hotKeys.register(keyCode: Shortcuts.jumpKeys[index].keyCode,
-                             modifiers: Shortcuts.jumpModifiers) { [weak self] in
-                guard let self else { return }
-                let ids = self.displays.orderedDisplays()
-                if ids.indices.contains(index) { self.displays.moveCursor(to: ids[index]) }
+        // Per-display jump keys (user binding, or positional default).
+        for (index, id) in displays.orderedDisplays().enumerated() {
+            let key = displays.stableKey(for: id)
+            guard let combo = Shortcuts.jumpCombo(index: index, displayKey: key, store: store) else { continue }
+            hotKeys.register(keyCode: combo.keyCode, modifiers: combo.carbonModifiers) { [weak self] in
+                guard let self, let target = self.displays.display(forStableKey: key) else { return }
+                self.displays.moveCursor(to: target)
             }
         }
 
-        // ⌃⌥→ / ⌃⌥←  →  cycle to the next / previous display.
-        hotKeys.register(keyCode: kVK_RightArrow, modifiers: Shortcuts.cycleModifiers) { [weak self] in
+        // Cycle keys.
+        let next = Shortcuts.nextCombo(store)
+        hotKeys.register(keyCode: next.keyCode, modifiers: next.carbonModifiers) { [weak self] in
             self?.displays.moveToAdjacentDisplay(forward: true)
         }
-        hotKeys.register(keyCode: kVK_LeftArrow, modifiers: Shortcuts.cycleModifiers) { [weak self] in
+        let prev = Shortcuts.prevCombo(store)
+        hotKeys.register(keyCode: prev.keyCode, modifiers: prev.carbonModifiers) { [weak self] in
             self?.displays.moveToAdjacentDisplay(forward: false)
         }
     }
