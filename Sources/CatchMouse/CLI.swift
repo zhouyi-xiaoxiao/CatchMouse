@@ -17,7 +17,7 @@ scriptable equivalents that move the cursor once and exit:
   --help, -h            Print this help.
 
 Global hotkeys when running as the menu-bar agent:
-  ⌃⌥1 … ⌃⌥9            Jump to display 1 … 9 (left → right).
+  ⌃⌘, / ⌃⌘. / ⌃⌘/      Jump to the left / centre / right display.
   ⌃⌥→ / ⌃⌥←            Cycle to the next / previous display.
 """
 

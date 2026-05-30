@@ -43,7 +43,7 @@ final class StatusMenuController: NSObject {
             for (index, id) in ids.enumerated() {
                 let bounds = CGDisplayBounds(id)
                 let isMain = (id == CGMainDisplayID()) ? " · main" : ""
-                let shortcut = index < 9 ? "   ⌃⌥\(index + 1)" : ""
+                let shortcut = index < Shortcuts.jumpKeys.count ? "   \(Shortcuts.jumpKeys[index].label)" : ""
                 let item = NSMenuItem(
                     title: "Display \(index + 1) — \(Int(bounds.width))×\(Int(bounds.height))\(isMain)\(shortcut)",
                     action: #selector(moveToDisplay(_:)), keyEquivalent: "")

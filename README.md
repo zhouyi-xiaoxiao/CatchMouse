@@ -17,8 +17,8 @@ small, dependency-free menu-bar agent built with the modern toolchain.
 
 ## Features
 
-- 🖥️ **Per-display hotkeys** — `⌃⌥1` … `⌃⌥9` warp the cursor to the centre of
-  display 1 … 9 (numbered left → right).
+- 🖥️ **Per-display hotkeys** — `⌃⌘,` / `⌃⌘.` / `⌃⌘/` warp the cursor to the
+  centre of the **left / centre / right** display.
 - 🔁 **Cycle** — `⌃⌥→` / `⌃⌥←` move to the next / previous display, wrapping
   around.
 - 🧭 **Menu-bar agent** — lives in the menu bar (no Dock icon); the menu lists
@@ -57,13 +57,16 @@ so there is no Dock icon or window.
 
 ### Global hotkeys
 
-| Shortcut        | Action                          |
-| --------------- | ------------------------------- |
-| `⌃⌥1` … `⌃⌥9`   | Jump to display 1 … 9           |
-| `⌃⌥→`           | Move to the next display        |
-| `⌃⌥←`           | Move to the previous display    |
+| Shortcut | Action |
+| --- | --- |
+| `⌃⌘,` / `⌃⌘.` / `⌃⌘/` | Jump to the left / centre / right display |
+| `⌃⌥→` | Move to the next display |
+| `⌃⌥←` | Move to the previous display |
 
-Displays are numbered left → right by their position in the global desktop.
+Displays are ordered left → right by their position in the global desktop, so
+`⌃⌘,` is the left-most display, `⌃⌘.` the centre and `⌃⌘/` the right. (With more
+than three displays, `,` `.` `/` map to the first three; use `⌃⌥→` / `⌃⌥←` to
+reach the rest.)
 
 ### Command line
 

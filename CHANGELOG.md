@@ -10,7 +10,8 @@ A ground-up rewrite of the classic **CatchMouse** (v1.2, 2011) for modern macOS.
 - Rewritten from scratch in **Swift + AppKit + Carbon**; the original shipped
   only a 32/64-bit Intel (`i386` + `x86_64`) binary with no source.
 - Programmatic menu-bar agent — no nibs, no storyboards.
-- `⌃⌥1` … `⌃⌥9` jump straight to a display; `⌃⌥→` / `⌃⌥←` cycle between them.
+- `⌃⌘,` / `⌃⌘.` / `⌃⌘/` jump to the left / centre / right display; `⌃⌥→` / `⌃⌥←`
+  cycle between them.
 - Scriptable CLI verbs: `--list`, `--move <n>`, `--move-next`, `--move-prev`.
 - Live handling of displays being connected and disconnected.
 - `build_app.sh` builds the `.app` with only the Command Line Tools installed.

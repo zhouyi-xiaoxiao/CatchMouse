@@ -40,14 +40,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func registerHotKeys() {
         hotKeys.unregisterAll()
-        let mods = controlKey | optionKey
 
-        // ⌃⌥1 … ⌃⌥9  →  jump straight to display 1 … 9 (left → right).
-        let numberKeys = [kVK_ANSI_1, kVK_ANSI_2, kVK_ANSI_3, kVK_ANSI_4, kVK_ANSI_5,
-                          kVK_ANSI_6, kVK_ANSI_7, kVK_ANSI_8, kVK_ANSI_9]
-        let count = min(displays.orderedDisplays().count, numberKeys.count)
+        // ⌃⌘,  ⌃⌘.  ⌃⌘/  →  jump to the left / centre / right display.
+        let ids = displays.orderedDisplays()
+        let count = min(ids.count, Shortcuts.jumpKeys.count)
         for index in 0..<count {
-            hotKeys.register(keyCode: numberKeys[index], modifiers: mods) { [weak self] in
+            hotKeys.register(keyCode: Shortcuts.jumpKeys[index].keyCode,
+                             modifiers: Shortcuts.jumpModifiers) { [weak self] in
                 guard let self else { return }
                 let ids = self.displays.orderedDisplays()
                 if ids.indices.contains(index) { self.displays.moveCursor(to: ids[index]) }
@@ -55,10 +54,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         // ⌃⌥→ / ⌃⌥←  →  cycle to the next / previous display.
-        hotKeys.register(keyCode: kVK_RightArrow, modifiers: mods) { [weak self] in
+        hotKeys.register(keyCode: kVK_RightArrow, modifiers: Shortcuts.cycleModifiers) { [weak self] in
             self?.displays.moveToAdjacentDisplay(forward: true)
         }
-        hotKeys.register(keyCode: kVK_LeftArrow, modifiers: mods) { [weak self] in
+        hotKeys.register(keyCode: kVK_LeftArrow, modifiers: Shortcuts.cycleModifiers) { [weak self] in
             self?.displays.moveToAdjacentDisplay(forward: false)
         }
     }
