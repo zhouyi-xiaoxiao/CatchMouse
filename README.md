@@ -2,6 +2,9 @@
 
 Jump the mouse cursor between displays with a global keyboard shortcut.
 
+Version 2.1.0, 30 May 2026 · macOS 11 or later · MIT licence · no binary
+release: [build it from source](#install) with the Xcode Command Line Tools.
+
 A modern, **Apple-Silicon-native** reimplementation of the classic
 [CatchMouse](https://github.com/round/CatchMouse) utility (v1.2, ftnew.com,
 2011), which shipped only as a 32/64-bit **Intel** binary and runs on Apple
@@ -17,23 +20,23 @@ small, dependency-free menu-bar agent built with the modern toolchain.
 
 ## Features
 
-- 🖥️ **Per-display hotkeys** — `⌃⌘,` / `⌃⌘.` / `⌃⌘/` warp the cursor to the
+- **Per-display hotkeys** — `⌃⌘,` / `⌃⌘.` / `⌃⌘/` warp the cursor to the
   centre of the **left / centre / right** display.
-- 🔁 **Cycle** — `⌃⌥→` / `⌃⌥←` move to the next / previous display, wrapping
+- **Cycle** — `⌃⌥→` / `⌃⌥←` move to the next / previous display, wrapping
   around.
-- ⚙️ **Customisable** — set your own shortcut for each display (and for cycling)
+- **Customisable** — set your own shortcut for each display (and for cycling)
   in the **Preferences** window; bindings are saved per monitor and survive
   reconnects.
-- 🔢 **Identify Displays** — flash a big number on each screen so you know which
+- **Identify Displays** — flash a big number on each screen so you know which
   is which.
-- 🧭 **Menu-bar agent** — lives in the menu bar (no Dock icon); the menu lists
+- **Menu-bar agent** — lives in the menu bar (no Dock icon); the menu lists
   every attached display and its size, and updates live as you plug monitors
   in and out.
-- 🔓 **No Accessibility permission required** — cursor movement uses
+- **No Accessibility permission required** — cursor movement uses
   `CGWarpMouseCursorPosition` rather than synthetic events.
-- ⌨️ **Scriptable** — the same actions are available as CLI verbs, so you can
+- **Scriptable** — the same actions are available as CLI verbs, so you can
   bind them to your own launcher or window manager.
-- 🏎️ **Native** — universal `arm64 + x86_64` binary; no Rosetta on Apple Silicon.
+- **Native** — universal `arm64 + x86_64` binary; no Rosetta on Apple Silicon.
 
 ## Install
 
@@ -119,3 +122,7 @@ the original is included.
 ## License
 
 [MIT](LICENSE).
+
+---
+
+Xiaoxiao Zhouyi · [zhouyixiaoxiao.com](https://zhouyixiaoxiao.com/)
