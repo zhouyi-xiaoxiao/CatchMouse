@@ -2,7 +2,9 @@
 
 Jump the mouse cursor between displays with a global keyboard shortcut.
 
-Version 2.1.0, 30 May 2026 · macOS 11 or later · MIT licence · no binary
+![Schematic of the CatchMouse menu-bar menu and Preferences window](docs/catchmouse-overview.svg)
+
+Version 2.1.0, 30 May 2026 · macOS 11 or later · MIT license · no binary
 release: [build it from source](#install) with the Xcode Command Line Tools.
 
 A modern, **Apple-Silicon-native** reimplementation of the classic
@@ -13,15 +15,15 @@ builds and runs natively on `arm64`, with no original code or assets reused.
 
 ## Why
 
-The original `CatchMouse.app` is a `i386` + `x86_64` Mach-O with no published
-source, so it cannot be rebuilt or recompiled for Apple Silicon. This project
+The original `CatchMouse.app` is an Intel-only (`i386` + `x86_64`) binary with no
+published source, so it cannot be rebuilt for Apple Silicon. This project
 reproduces its behaviour — move the cursor to a chosen display instantly — as a
 small, dependency-free menu-bar agent built with the modern toolchain.
 
 ## Features
 
 - **Per-display hotkeys** — `⌃⌘,` / `⌃⌘.` / `⌃⌘/` warp the cursor to the
-  centre of the **left / centre / right** display.
+  centre of the **first / second / third display from the left**.
 - **Cycle** — `⌃⌥→` / `⌃⌥←` move to the next / previous display, wrapping
   around.
 - **Customisable** — set your own shortcut for each display (and for cycling)
@@ -36,7 +38,9 @@ small, dependency-free menu-bar agent built with the modern toolchain.
   `CGWarpMouseCursorPosition` rather than synthetic events.
 - **Scriptable** — the same actions are available as CLI verbs, so you can
   bind them to your own launcher or window manager.
-- **Native** — universal `arm64 + x86_64` binary; no Rosetta on Apple Silicon.
+- **Native** — runs natively on Apple Silicon (`arm64`); `build_app.sh` also
+  adds an `x86_64` slice for Intel Macs when the toolchain allows, producing a
+  universal binary. No Rosetta needed.
 
 ## Install
 
@@ -67,14 +71,15 @@ so there is no Dock icon or window.
 
 | Shortcut | Action |
 | --- | --- |
-| `⌃⌘,` / `⌃⌘.` / `⌃⌘/` | Jump to the left / centre / right display |
+| `⌃⌘,` / `⌃⌘.` / `⌃⌘/` | Jump to the first / second / third display from the left |
 | `⌃⌥→` | Move to the next display |
 | `⌃⌥←` | Move to the previous display |
 
-Displays are ordered left → right by their position in the global desktop, so
-`⌃⌘,` is the left-most display, `⌃⌘.` the centre and `⌃⌘/` the right. (With more
-than three displays, `,` `.` `/` map to the first three; use `⌃⌥→` / `⌃⌥←` to
-reach the rest.)
+Displays are numbered left → right by their position in the global desktop.
+`⌃⌘,` `⌃⌘.` `⌃⌘/` jump to the first, second and third display from the left —
+with three displays that is left / centre / right; with two, `⌃⌘.` is the
+right-hand display. With more than three, use `⌃⌥→` / `⌃⌥←` (or assign your
+own shortcuts in Preferences) to reach the rest.
 
 **Customise shortcuts:** open **Preferences…** from the menu-bar icon, click any
 recorder and press the combination you want (⎋ cancels, ⌫ clears). Each
@@ -92,6 +97,9 @@ CatchMouse --list        # list displays: number, id, size, position
 CatchMouse --move 2      # warp the cursor to the centre of display 2
 CatchMouse --move-next   # warp to the next display
 CatchMouse --move-prev   # warp to the previous display
+CatchMouse --preferences # launch the menu-bar agent and open Preferences
+CatchMouse --version     # print the version
+CatchMouse --help        # print all verbs and their short forms
 ```
 
 (The binary inside the bundle is at
@@ -105,19 +113,19 @@ swift run CatchMouse --list
 ./build_app.sh         # release .app bundle (universal when possible)
 ```
 
-| File | Role |
-| --- | --- |
-| `DisplayManager.swift` | Enumerate displays, compute centres, warp the cursor |
-| `HotKeyCenter.swift`   | Carbon `RegisterEventHotKey` wrapper for global hotkeys |
-| `AppDelegate.swift`    | Wires hotkeys + menu together, reacts to display changes |
-| `StatusMenuController.swift` | The menu-bar status item and its menu |
-| `CLI.swift`            | Scriptable `--list` / `--move*` verbs |
+- `DisplayManager.swift` — enumerate displays, compute centres, warp the cursor
+- `HotKeyCenter.swift` — Carbon `RegisterEventHotKey` wrapper for global hotkeys
+- `Shortcuts.swift` / `KeyCombo.swift` — default shortcuts and key-combo model
+- `HotKeyStore.swift` — per-display bindings saved by display UUID
+- `PreferencesWindowController.swift` / `HotKeyRecorderView.swift` — Preferences window and click-to-record control
+- `AppDelegate.swift` / `StatusMenuController.swift` — menu-bar item, wiring, display-change handling
+- `CLI.swift` / `main.swift` — scriptable `--list` / `--move*` verbs and entry point
 
 ## Credits
 
-Inspired by the original **CatchMouse** by ftnew.com. This is an independent,
-clean-room reimplementation of the idea — no source, binary, or artwork from
-the original is included.
+Inspired by the original **CatchMouse** by ftnew.com. This is an independent
+reimplementation of its behaviour, written from scratch — no source, binary,
+or artwork from the original is included.
 
 ## License
 
