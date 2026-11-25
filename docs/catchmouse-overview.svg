@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+  <title id="title">Schematic of the CatchMouse menu-bar menu and Preferences window</title>
+  <desc id="desc">Schematic drawing, not a screenshot. Left: the menu-bar menu with three example displays and their default shortcuts. Right: the Preferences window with a shortcut recorder for each display and for cycling.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef5ff"/>
+      <stop offset="1" stop-color="#d9e6f6"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#17304f" flood-opacity="0.18"/>
+    </filter>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", sans-serif; fill: #17253a; font-size: 18px; }
+      .muted { fill: #8391a5; }
+      .bold { font-weight: 600; }
+      .key { font-size: 17px; }
+      .note { font-size: 14px; fill: #64748b; }
+      .sep { stroke: #dbe3ee; stroke-width: 1.5; }
+      .rec { fill: #eef4fc; stroke: #a9c3e2; stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <rect width="1000" height="600" rx="24" fill="url(#bg)"/>
+  <!-- menu bar with the status item -->
+  <path d="M24 0 H976 A24 24 0 0 1 1000 24 V40 H0 V24 A24 24 0 0 1 24 0 Z" fill="#ffffff" fill-opacity="0.75"/>
+  <rect x="58" y="6" width="34" height="28" rx="6" fill="#cfdcee"/>
+  <path d="M70 12 L70 28 L74 24 L77 31 L80 30 L77 23 L83 23 Z" fill="#17253a"/>
+
+  <!-- menu-bar menu -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="48" width="420" height="394" rx="12" fill="#ffffff" stroke="#c8d7e9" stroke-width="1.5"/>
+  </g>
+  <text x="62" y="80" class="muted">CatchMouse</text>
+  <line x1="56" y1="94" x2="444" y2="94" class="sep"/>
+  <text x="62" y="124">Display 1 — 2560×1440 · main</text><text x="438" y="124" text-anchor="end" class="key">⌃⌘,</text>
+  <text x="62" y="156">Display 2 — 1920×1080</text><text x="438" y="156" text-anchor="end" class="key">⌃⌘.</text>
+  <text x="62" y="188">Display 3 — 1920×1080</text><text x="438" y="188" text-anchor="end" class="key">⌃⌘/</text>
+  <line x1="56" y1="202" x2="444" y2="202" class="sep"/>
+  <text x="62" y="232">Move to Next Display</text><text x="438" y="232" text-anchor="end" class="key">⌃⌥→</text>
+  <text x="62" y="264">Move to Previous Display</text><text x="438" y="264" text-anchor="end" class="key">⌃⌥←</text>
+  <line x1="56" y1="278" x2="444" y2="278" class="sep"/>
+  <text x="62" y="308">Identify Displays</text>
+  <text x="62" y="340">Preferences…</text><text x="438" y="340" text-anchor="end" class="key muted">⌘,</text>
+  <line x1="56" y1="354" x2="444" y2="354" class="sep"/>
+  <text x="62" y="384">About CatchMouse</text>
+  <text x="62" y="416">Quit CatchMouse</text><text x="438" y="416" text-anchor="end" class="key muted">⌘Q</text>
+
+  <!-- Preferences window -->
+  <g filter="url(#shadow)">
+    <rect x="490" y="86" width="470" height="432" rx="12" fill="#ffffff" stroke="#c8d7e9" stroke-width="1.5"/>
+  </g>
+  <path d="M502 86 H948 A12 12 0 0 1 960 98 V124 H490 V98 A12 12 0 0 1 502 86 Z" fill="#eef3f9"/>
+  <line x1="490" y1="124" x2="960" y2="124" class="sep"/>
+  <circle cx="512" cy="105" r="6.5" fill="#f56b69"/>
+  <circle cx="534" cy="105" r="6.5" fill="#f6bd4f"/>
+  <circle cx="556" cy="105" r="6.5" fill="#55c76b"/>
+  <text x="725" y="111" text-anchor="middle" class="bold" style="font-size:17px">CatchMouse Preferences</text>
+
+  <text x="514" y="162" class="bold">Jump to display</text>
+  <text x="514" y="200">Display 1 — 2560×1440 · main</text>
+  <rect x="826" y="180" width="110" height="30" rx="7" class="rec"/><text x="881" y="201" text-anchor="middle" class="key">⌃⌘,</text>
+  <text x="514" y="240">Display 2 — 1920×1080</text>
+  <rect x="826" y="220" width="110" height="30" rx="7" class="rec"/><text x="881" y="241" text-anchor="middle" class="key">⌃⌘.</text>
+  <text x="514" y="280">Display 3 — 1920×1080</text>
+  <rect x="826" y="260" width="110" height="30" rx="7" class="rec"/><text x="881" y="281" text-anchor="middle" class="key">⌃⌘/</text>
+
+  <text x="514" y="334" class="bold">Cycle displays</text>
+  <text x="514" y="372">Next display</text>
+  <rect x="826" y="352" width="110" height="30" rx="7" class="rec"/><text x="881" y="373" text-anchor="middle" class="key">⌃⌥→</text>
+  <text x="514" y="412">Previous display</text>
+  <rect x="826" y="392" width="110" height="30" rx="7" class="rec"/><text x="881" y="413" text-anchor="middle" class="key">⌃⌥←</text>
+
+  <rect x="514" y="460" width="170" height="32" rx="7" fill="#f4f7fb" stroke="#b9c8da" stroke-width="1.5"/>
+  <text x="599" y="482" text-anchor="middle" style="font-size:16px">Identify Displays</text>
+  <rect x="698" y="460" width="170" height="32" rx="7" fill="#f4f7fb" stroke="#b9c8da" stroke-width="1.5"/>
+  <text x="783" y="482" text-anchor="middle" style="font-size:16px">Reset to Defaults</text>
+
+  <text x="40" y="578" class="note">Schematic drawing, not a screenshot · three example displays · default shortcuts</text>
+</svg>
